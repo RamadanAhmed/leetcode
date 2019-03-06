@@ -78,7 +78,24 @@
  * 
  */
 #include <string>
+#include <map>
+static bool _foo = ios::sync_with_stdio(false);
+static ostream *_bar = cin.tie(NULL);
 class Solution {
   public:
-    int romanToInt(std::string s) {}
+    const std::map<char, int> dict = {{'I', 1}, {'V', 5}, {'X', 10}, {'L', 50}, {'C', 100}, {'D', 500}, {'M', 1000}};
+    int romanToInt(std::string s) {
+        int result = 0;
+        for(int i = 0; i < s.length(); i++) {
+            auto s0 = dict.at(s[i]);
+            int s1 = (i + 1 < s.length()) ? dict.at(s[i + 1]) : -1;
+            if(s1 > 0 && s0 < s1) {
+                result += s1 - s0;
+                i++;
+            } else {
+                result += s0;
+            }
+        }
+        return result;
+    }
 };

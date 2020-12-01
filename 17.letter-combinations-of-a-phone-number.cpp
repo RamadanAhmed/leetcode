@@ -34,10 +34,17 @@
  * in any order you want.
  * 
  */
-
+#include <string>
+#include <unordered_map>
+#include <algorithm>
+#include <numeric>
+#include <vector>
+using namespace std;
 // @lc code=start
 class Solution {
-    std::map<char , string> phone {
+    std::unordered_map<char , string> phone {
+        {'0', ""},
+        {'1', ""},
         {'2', "abc"},
         {'3', "def"},
         {'4', "ghi"},
@@ -46,12 +53,22 @@ class Solution {
         {'7', "pqrs"},
         {'8', "tuv"},
         {'9', "wxyz"},
-        {'0', " "},
-        
-    }
+    };
 public:
     vector<string> letterCombinations(string digits) {
-        
+        if(digits.empty()) return std::vector<string>{};
+
+        std::vector<string> result(1,"");
+        for(auto const& digit : digits) {
+            auto curr_str = phone.at(digit);
+            std::vector<string> tmp;
+            for(auto const& ch : curr_str){
+                for(auto const& elem : result)
+                tmp.push_back(elem + ch);
+            }
+            std::swap(tmp, result);
+        }
+        return result;
     }
 };
 // @lc code=end

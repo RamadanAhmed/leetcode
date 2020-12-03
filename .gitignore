@@ -11,6 +11,9 @@
 *.userprefs
 
 # Build results
+.clangd/
+out/
+.vscode/
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/

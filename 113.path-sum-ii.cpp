@@ -21,32 +21,44 @@ using namespace std;
 
 class Solution {
 public:
-    vector<vector<int>> pathSum(TreeNode* root, int sum) {
-        stack<TreeNode*> visited;
-        vector<vector<int>> paths;
-        auto curr = root;
-        while(!visited.empty() || curr != nullptr){
-            vector<int> current_result;
-            auto curr_sum = 0;
-            while(curr != nullptr){
-                if((curr_sum + curr->val) > sum){
-                    break;
-                }
-                current_result.push_back(curr->val);
-                curr_sum += curr->val;
-                visited.push(curr);
-                curr = curr->left;
-            }
-            if(curr == nullptr && curr_sum == sum){
-                paths.emplace_back(current_result);
-                current_result.pop_back();
-            }
-            curr = visited.top();
-            visited.pop();
-            curr = curr->right;
+    vector<vector<int>> pathSum(TreeNode *root, int sum) {
+    stack<TreeNode *> visited;
+    vector<vector<int>> paths;
+    auto curr = root;
+    vector<int> current_result;
+    int curr_sum = 0;
+    TreeNode * prev = nullptr;
+    while(!visited.empty() || curr != nullptr) {
+        while(curr != nullptr) {
+            current_result.push_back(curr->val);
+            curr_sum += curr->val;
+            visited.push(curr);
+            curr = curr->left;
         }
-        return paths;
+        
+        curr = visited.top();
+
+        if(curr->left == nullptr && curr->right == nullptr && curr_sum == sum) {
+            paths.push_back(current_result);
+            prev = curr;
+            visited.pop();
+            curr_sum -= curr->val;
+            current_result.pop_back();
+            curr = nullptr;
+            continue;
+        }
+        if(curr->right != nullptr && prev != curr->right) {
+            curr = curr->right;
+        } else {
+            prev = curr;
+            visited.pop();
+            curr_sum -= curr->val;
+            current_result.pop_back();
+            curr = nullptr;
+        }
     }
+    return paths;
+}
 };
 // @lc code=end
 

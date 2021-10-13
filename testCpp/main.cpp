@@ -1,27 +1,16 @@
-/*
- * @lc app=leetcode id=113 lang=cpp
- *
- * [113] Path Sum II
- */
-
-// @lc code=start
-/**
- * Definition for a binary tree node.
-
- */
-#include <stack>
-#include <vector>
 #include <algorithm>
-#include <utility>
+#include <optional>
+#include <vector>
+#include <iterator>
 #include <numeric>
+#include <stack>
 
+#include "ListNodeHelper.hpp"
+#include "TreeNodeHelper.hpp"
 using namespace std;
+using namespace leetCode;
 
-
-
-class Solution {
-public:
-    vector<vector<int>> pathSum(TreeNode *root, int sum) {
+vector<vector<int>> pathSum(TreeNode *root, int sum) {
     stack<TreeNode *> visited;
     vector<vector<int>> paths;
     auto curr = root;
@@ -56,9 +45,16 @@ public:
             current_result.pop_back();
             curr = nullptr;
         }
+        visited.pop();
+        curr = curr->right;
     }
     return paths;
 }
-};
-// @lc code=end
 
+int main() {
+
+    auto nodes = construct_from_vector(vector<optional<int>>{5, 4, 8, 11, nullopt, 13, 4, 7, 2, nullopt, nullopt, 5, 1});
+    auto vec = pathSum(&nodes[0], 22);
+
+    return 0;
+}
